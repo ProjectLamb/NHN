@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 763fe27571cd451a884901984c2b3852, type: 3}
+  m_Name: IngredientPrefabDatabase
+  m_EditorClassIdentifier: 
+  setupVersion: 2
+  entries:
+  - stateId: BREAD_BAG_CLOSED_LOAF
+    prefab: {fileID: 5240170519080912849, guid: bbd95de2c1b792a48b8f857718190c5d,
+      type: 3}
+  - stateId: BREAD_BAG_OPENED_LOAF
+    prefab: {fileID: 1860083862892340580, guid: 8a84eb6b434026243be89223148e4285,
+      type: 3}
+  - stateId: BREAD_LOAF
+    prefab: {fileID: 2287806077959218868, guid: b969884d8418fb143a11e623d77d3289,
+      type: 3}
+  - stateId: CABBAGE_PIECE
+    prefab: {fileID: 919132149155446097, guid: a1682705420163349b0a670b4132e43b, type: 3}
+  - stateId: CHEESE_PACK_CLOSED_STACK
+    prefab: {fileID: 7915105553513795393, guid: 50f27893947d806468830e39803d61ea,
+      type: 3}
+  - stateId: CHEESE_PACK_OPENED_STACK
+    prefab: {fileID: 1032308387763308904, guid: aec7b9ab0d891e0409a75505e81e7a04,
+      type: 3}
+  - stateId: HAM_PACK_CLOSED_STACK
+    prefab: {fileID: 2625653732631313543, guid: e579af16a4d892e47a64655bcc098ad8,
+      type: 3}
+  - stateId: HAM_PACK_OPENED_STACK
+    prefab: {fileID: 8492730987703068976, guid: 7db6a537972b85e42a184df13d70ba99,
+      type: 3}
+  - stateId: L_CUT_BREAD_BAG_CLOSED_LOAF
+    prefab: {fileID: 4202785454931396525, guid: 2d0e0b11f909a9741a41cb178855ee53,
+      type: 3}
+  - stateId: L_CUT_BREAD_BAG_OPENED_LOAF
+    prefab: {fileID: 7228129414567371053, guid: dd5dabbd60b86a443926d9b8c2e96e9e,
+      type: 3}
+  - stateId: L_CUT_BREAD_LOAF
+    prefab: {fileID: 8422185339436572182, guid: fafd5c70b5f4857448fe38e7c8dea7d9,
+      type: 3}
+  - stateId: L_CUT_CABBAGE_PIECE
+    prefab: {fileID: 919132149155446097, guid: 6452163c0c5f2f444a2086f6b24b2f05, type: 3}
+  - stateId: L_CUT_CHEESE_PACK_CLOSED_STACK
+    prefab: {fileID: 8722485941612870921, guid: c1f2eb16641b6784aa1371ac87a86e9b,
+      type: 3}
+  - stateId: L_CUT_CHEESE_PACK_OPENED_STACK
+    prefab: {fileID: 8783113105841008372, guid: b4c329c0e3cac5240a412d075f0a1900,
+      type: 3}
+  - stateId: L_CUT_HAM_PACK_CLOSED_STACK
+    prefab: {fileID: 5131507773746703146, guid: 3207317027833f548b7652ad2b8501bc,
+      type: 3}
+  - stateId: L_CUT_HAM_PACK_OPENED_STACK
+    prefab: {fileID: 4678653248628267373, guid: 79d072685b60705408289b4215484e07,
+      type: 3}
+  - stateId: L_OPENED_CHEESE_SLICE
+    prefab: {fileID: 4682989621372903944, guid: 6c66e4ccbd1ae274cb8ec5457733d5eb,
+      type: 3}
+  - stateId: L_TAKEOFF_CHEESE_SLICE_WRAPPED
+    prefab: {fileID: 6776897977796158712, guid: ede969224e59d2743ac8d6dbdd8bc1f1,
+      type: 3}
+  - stateId: L_TAKEOFF_HAM_SLICE
+    prefab: {fileID: 651014985210565790, guid: cc408a232e4308649836d7de895332f2, type: 3}
+  - stateId: L_TAKEOFF_MAYO
+    prefab: {fileID: 2960454128215605506, guid: 59be4fc25e0406e4eb4d91e4dfec2d7f,
+      type: 3}
+  - stateId: L_TAKEOFF_TOMATO_SLICE
+    prefab: {fileID: 919132149155446097, guid: eb38c99ebaf59174d81df80bd8abc770, type: 3}
+  - stateId: M_CUT_BREAD_BAG_CLOSED_LOAF
+    prefab: {fileID: 8749540190742896575, guid: 2a9d23b80695ba640b1c2a600e3e4c40,
+      type: 3}
+  - stateId: M_CUT_BREAD_BAG_OPENED_LOAF
+    prefab: {fileID: 8101245106544722015, guid: d82dbf9f77b2b5d4ca37128cc9bb92e3,
+      type: 3}
+  - stateId: M_CUT_BREAD_LOAF
+    prefab: {fileID: 9036492308298004246, guid: 2143ed63c4c676641826d07688a5a396,
+      type: 3}
+  - stateId: M_CUT_CABBAGE_PIECE
+    prefab: {fileID: 919132149155446097, guid: 6452163c0c5f2f444a2086f6b24b2f05, type: 3}
+  - stateId: M_CUT_CHEESE_PACK_CLOSED_STACK
+    prefab: {fileID: 2279305481584649082, guid: fba5d8a96cfd0934fa689ecea67fe3a0,
+      type: 3}
+  - stateId: M_CUT_CHEESE_PACK_OPENED_STACK
+    prefab: {fileID: 4146786212601771434, guid: 78d14ce5be704f84381ca07093b2a9db,
+      type: 3}
+  - stateId: M_CUT_HAM_PACK_CLOSED_STACK
+    prefab: {fileID: 6240995435311766679, guid: b0ca51d4a7ef82945bd208fc0ed2940b,
+      type: 3}
+  - stateId: M_CUT_HAM_PACK_OPENED_STACK
+    prefab: {fileID: 8853678957655410461, guid: 0095935aa9d8d6744b21bbb44e6796c1,
+      type: 3}
+  - stateId: M_OPENED_CHEESE_SLICE
+    prefab: {fileID: 6723413072890453772, guid: 4d5d6f0aa622cac4280418d742dca7c6,
+      type: 3}
+  - stateId: M_TAKEOFF_CHEESE_SLICE_WRAPPED
+    prefab: {fileID: 1952845486582625078, guid: b820b5af2035e434cb1d7059e582b76b,
+      type: 3}
+  - stateId: M_TAKEOFF_HAM_SLICE
+    prefab: {fileID: 202734130674681512, guid: e4befdb49f8ef284c87dc706c993aa77, type: 3}
+  - stateId: M_TAKEOFF_MAYO
+    prefab: {fileID: 4368857361361404145, guid: 7c967d05cc3581f42ac18aaa4e7ce1d2,
+      type: 3}
+  - stateId: M_TAKEOFF_TOMATO_SLICE
+    prefab: {fileID: 919132149155446097, guid: eb38c99ebaf59174d81df80bd8abc770, type: 3}
+  - stateId: MAYO_BOTTLE_CLOSED
+    prefab: {fileID: 8003695081017950629, guid: af2f8899a3a3b2b4b837b74b9678a3fa,
+      type: 3}
+  - stateId: MAYO_BOTTLE_OPENED
+    prefab: {fileID: 1002593875774930523, guid: 6042f17afde5f3942b06284966c00488,
+      type: 3}
+  - stateId: MAYO_TAKEOFF_FAILED_CLOSED
+    prefab: {fileID: 3603698773255861960, guid: cc673f23a894994459da0a6931313f92,
+      type: 3}
+  - stateId: S_CUT_BREAD_BAG_CLOSED_LOAF
+    prefab: {fileID: 4522518468557925142, guid: 17fcad7d46902d640951fe7b84f47b3b,
+      type: 3}
+  - stateId: S_CUT_BREAD_BAG_OPENED_LOAF
+    prefab: {fileID: 999014749432224582, guid: a8c24c6e98f572044bc9c332b178f7a6, type: 3}
+  - stateId: S_CUT_BREAD_LOAF
+    prefab: {fileID: 4678791754964848218, guid: 822a20658285d5549bf8b420fd9fa344,
+      type: 3}
+  - stateId: S_CUT_CABBAGE_PIECE
+    prefab: {fileID: 919132149155446097, guid: 6452163c0c5f2f444a2086f6b24b2f05, type: 3}
+  - stateId: S_CUT_CHEESE_PACK_CLOSED_STACK
+    prefab: {fileID: 244519058230146103, guid: 74809ca47a889a94a9b512f3fbb18376, type: 3}
+  - stateId: S_CUT_CHEESE_PACK_OPENED_STACK
+    prefab: {fileID: 621401296628196989, guid: ee02779d95896064b832f326b0047458, type: 3}
+  - stateId: S_CUT_HAM_PACK_CLOSED_STACK
+    prefab: {fileID: 4855069555866987763, guid: 7b81dcb8998635140b4c600411090983,
+      type: 3}
+  - stateId: S_CUT_HAM_PACK_OPENED_STACK
+    prefab: {fileID: 4616615521961772438, guid: 6b2da83c237c91847b9b963474c4fe8f,
+      type: 3}
+  - stateId: S_OPENED_CHEESE_SLICE
+    prefab: {fileID: 5420990008678490115, guid: 059078798e3c4414bb7756de69eff8d4,
+      type: 3}
+  - stateId: S_TAKEOFF_CHEESE_SLICE_WRAPPED
+    prefab: {fileID: 7707246717719715592, guid: 57ea61882d853e24fba27a030b6cf3b8,
+      type: 3}
+  - stateId: S_TAKEOFF_HAM_SLICE
+    prefab: {fileID: 4536344952174083354, guid: 5f9a34bb03bb0f44c94121367a564305,
+      type: 3}
+  - stateId: S_TAKEOFF_MAYO
+    prefab: {fileID: 5553111693674594624, guid: 67c4084a3da89ea4286af1137c1c886b,
+      type: 3}
+  - stateId: S_TAKEOFF_TOMATO_SLICE
+    prefab: {fileID: 919132149155446097, guid: eb38c99ebaf59174d81df80bd8abc770, type: 3}
+  - stateId: TOMATO_SLICE_STACK
+    prefab: {fileID: 919132149155446097, guid: eb38c99ebaf59174d81df80bd8abc770, type: 3}

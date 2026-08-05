@@ -1,0 +1,211 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f15e9548cb44c299db1bfa07bedda31, type: 3}
+  m_Name: StateTransitionDatabase
+  m_EditorClassIdentifier: 
+  transitions:
+  - sourceStateId: BREAD_BAG_CLOSED_LOAF
+    action: Open
+    amount: 
+    resultStateId: BREAD_BAG_OPENED_LOAF
+  - sourceStateId: BREAD_BAG_CLOSED_LOAF
+    action: Cut
+    amount: L
+    resultStateId: L_CUT_BREAD_BAG_CLOSED_LOAF
+  - sourceStateId: BREAD_BAG_CLOSED_LOAF
+    action: Cut
+    amount: M
+    resultStateId: M_CUT_BREAD_BAG_CLOSED_LOAF
+  - sourceStateId: BREAD_BAG_CLOSED_LOAF
+    action: Cut
+    amount: S
+    resultStateId: S_CUT_BREAD_BAG_CLOSED_LOAF
+  - sourceStateId: BREAD_BAG_OPENED_LOAF
+    action: Cut
+    amount: L
+    resultStateId: L_CUT_BREAD_BAG_OPENED_LOAF
+  - sourceStateId: BREAD_BAG_OPENED_LOAF
+    action: Cut
+    amount: M
+    resultStateId: M_CUT_BREAD_BAG_OPENED_LOAF
+  - sourceStateId: BREAD_BAG_OPENED_LOAF
+    action: Cut
+    amount: S
+    resultStateId: S_CUT_BREAD_BAG_OPENED_LOAF
+  - sourceStateId: BREAD_BAG_OPENED_LOAF
+    action: TakeOff
+    amount: L
+    resultStateId: BREAD_LOAF
+  - sourceStateId: BREAD_BAG_OPENED_LOAF
+    action: TakeOff
+    amount: M
+    resultStateId: BREAD_LOAF
+  - sourceStateId: BREAD_BAG_OPENED_LOAF
+    action: TakeOff
+    amount: S
+    resultStateId: BREAD_LOAF
+  - sourceStateId: BREAD_LOAF
+    action: Cut
+    amount: L
+    resultStateId: L_CUT_BREAD_LOAF
+  - sourceStateId: BREAD_LOAF
+    action: Cut
+    amount: M
+    resultStateId: M_CUT_BREAD_LOAF
+  - sourceStateId: BREAD_LOAF
+    action: Cut
+    amount: S
+    resultStateId: S_CUT_BREAD_LOAF
+  - sourceStateId: HAM_PACK_CLOSED_STACK
+    action: Open
+    amount: 
+    resultStateId: HAM_PACK_OPENED_STACK
+  - sourceStateId: HAM_PACK_CLOSED_STACK
+    action: Cut
+    amount: L
+    resultStateId: L_CUT_HAM_PACK_CLOSED_STACK
+  - sourceStateId: HAM_PACK_CLOSED_STACK
+    action: Cut
+    amount: M
+    resultStateId: M_CUT_HAM_PACK_CLOSED_STACK
+  - sourceStateId: HAM_PACK_CLOSED_STACK
+    action: Cut
+    amount: S
+    resultStateId: S_CUT_HAM_PACK_CLOSED_STACK
+  - sourceStateId: HAM_PACK_OPENED_STACK
+    action: Cut
+    amount: L
+    resultStateId: L_CUT_HAM_PACK_OPENED_STACK
+  - sourceStateId: HAM_PACK_OPENED_STACK
+    action: Cut
+    amount: M
+    resultStateId: M_CUT_HAM_PACK_OPENED_STACK
+  - sourceStateId: HAM_PACK_OPENED_STACK
+    action: Cut
+    amount: S
+    resultStateId: S_CUT_HAM_PACK_OPENED_STACK
+  - sourceStateId: HAM_PACK_OPENED_STACK
+    action: TakeOff
+    amount: L
+    resultStateId: L_TAKEOFF_HAM_SLICE
+  - sourceStateId: HAM_PACK_OPENED_STACK
+    action: TakeOff
+    amount: M
+    resultStateId: M_TAKEOFF_HAM_SLICE
+  - sourceStateId: HAM_PACK_OPENED_STACK
+    action: TakeOff
+    amount: S
+    resultStateId: S_TAKEOFF_HAM_SLICE
+  - sourceStateId: TOMATO_SLICE_STACK
+    action: TakeOff
+    amount: L
+    resultStateId: L_TAKEOFF_TOMATO_SLICE
+  - sourceStateId: TOMATO_SLICE_STACK
+    action: TakeOff
+    amount: M
+    resultStateId: M_TAKEOFF_TOMATO_SLICE
+  - sourceStateId: TOMATO_SLICE_STACK
+    action: TakeOff
+    amount: S
+    resultStateId: S_TAKEOFF_TOMATO_SLICE
+  - sourceStateId: CHEESE_PACK_CLOSED_STACK
+    action: Open
+    amount: 
+    resultStateId: CHEESE_PACK_OPENED_STACK
+  - sourceStateId: CHEESE_PACK_CLOSED_STACK
+    action: Cut
+    amount: L
+    resultStateId: L_CUT_CHEESE_PACK_CLOSED_STACK
+  - sourceStateId: CHEESE_PACK_CLOSED_STACK
+    action: Cut
+    amount: M
+    resultStateId: M_CUT_CHEESE_PACK_CLOSED_STACK
+  - sourceStateId: CHEESE_PACK_CLOSED_STACK
+    action: Cut
+    amount: S
+    resultStateId: S_CUT_CHEESE_PACK_CLOSED_STACK
+  - sourceStateId: CHEESE_PACK_OPENED_STACK
+    action: Cut
+    amount: L
+    resultStateId: L_CUT_CHEESE_PACK_OPENED_STACK
+  - sourceStateId: CHEESE_PACK_OPENED_STACK
+    action: Cut
+    amount: M
+    resultStateId: M_CUT_CHEESE_PACK_OPENED_STACK
+  - sourceStateId: CHEESE_PACK_OPENED_STACK
+    action: Cut
+    amount: S
+    resultStateId: S_CUT_CHEESE_PACK_OPENED_STACK
+  - sourceStateId: CHEESE_PACK_OPENED_STACK
+    action: TakeOff
+    amount: L
+    resultStateId: L_TAKEOFF_CHEESE_SLICE_WRAPPED
+  - sourceStateId: CHEESE_PACK_OPENED_STACK
+    action: TakeOff
+    amount: M
+    resultStateId: M_TAKEOFF_CHEESE_SLICE_WRAPPED
+  - sourceStateId: CHEESE_PACK_OPENED_STACK
+    action: TakeOff
+    amount: S
+    resultStateId: S_TAKEOFF_CHEESE_SLICE_WRAPPED
+  - sourceStateId: S_TAKEOFF_CHEESE_SLICE_WRAPPED
+    action: Open
+    amount: 
+    resultStateId: S_OPENED_CHEESE_SLICE
+  - sourceStateId: M_TAKEOFF_CHEESE_SLICE_WRAPPED
+    action: Open
+    amount: 
+    resultStateId: M_OPENED_CHEESE_SLICE
+  - sourceStateId: L_TAKEOFF_CHEESE_SLICE_WRAPPED
+    action: Open
+    amount: 
+    resultStateId: L_OPENED_CHEESE_SLICE
+  - sourceStateId: MAYO_BOTTLE_CLOSED
+    action: TakeOff
+    amount: L
+    resultStateId: MAYO_TAKEOFF_FAILED_CLOSED
+  - sourceStateId: MAYO_BOTTLE_CLOSED
+    action: TakeOff
+    amount: M
+    resultStateId: MAYO_TAKEOFF_FAILED_CLOSED
+  - sourceStateId: MAYO_BOTTLE_CLOSED
+    action: TakeOff
+    amount: S
+    resultStateId: MAYO_TAKEOFF_FAILED_CLOSED
+  - sourceStateId: MAYO_BOTTLE_CLOSED
+    action: Open
+    amount: 
+    resultStateId: MAYO_BOTTLE_OPENED
+  - sourceStateId: MAYO_BOTTLE_OPENED
+    action: TakeOff
+    amount: L
+    resultStateId: L_TAKEOFF_MAYO
+  - sourceStateId: MAYO_BOTTLE_OPENED
+    action: TakeOff
+    amount: M
+    resultStateId: M_TAKEOFF_MAYO
+  - sourceStateId: MAYO_BOTTLE_OPENED
+    action: TakeOff
+    amount: S
+    resultStateId: S_TAKEOFF_MAYO
+  - sourceStateId: CABBAGE_PIECE
+    action: Cut
+    amount: L
+    resultStateId: L_CUT_CABBAGE_PIECE
+  - sourceStateId: CABBAGE_PIECE
+    action: Cut
+    amount: M
+    resultStateId: M_CUT_CABBAGE_PIECE
+  - sourceStateId: CABBAGE_PIECE
+    action: Cut
+    amount: S
+    resultStateId: S_CUT_CABBAGE_PIECE
