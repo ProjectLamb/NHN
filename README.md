@@ -1,76 +1,70 @@
 # SandwichOS AI Sandwich Game
 
-Unity 2023.2.22f1 WebGL 프로젝트다. `GameStartMenu`의 기존 연출과 `GameScene`의 기존 UI를 유지하면서, TMP 명령 입력을 Firebase Functions 2세대와 OpenAI Responses API에 연결한다.
+Unity 2023.2.22f1 WebGL 프로젝트입니다. 게임의 TMP 명령 입력을 Cloudflare Worker를 통해 OpenAI Responses API에 연결합니다. OpenAI API 키는 Unity 빌드에 포함하지 않고 Worker Secret으로 보관합니다.
 
-## 현재 씬 자동 설정
+## Unity 자동 설정
 
-처음 스크립트를 가져온 뒤 Unity의 Play Mode를 종료하면 누락된 데이터베이스를 감지하여 한 번 자동 설정한다. 자동 설정은 열린 씬을 저장하고 `GameScene`을 구성한 뒤 원래 씬으로 돌아온다. 수동 재적용은 다음 메뉴를 사용한다.
+Unity에서 Play Mode를 종료하면 필요한 데이터베이스와 오브젝트를 자동 설정합니다. 수동으로 다시 적용하려면 다음 메뉴를 사용합니다.
 
 `Sandwich > Apply Complete Setup To GameScene`
 
-이 작업이 생성/연결하는 항목:
+실제 서버를 사용하려면 `GameScene`의 `AICommandManager`에서 다음 값을 설정합니다.
 
-- PDF 기반 상태 전이 49개와 stateId 51개
-- `SandwichGameSystem`, 재료 슬롯 6개, `SandwichLayerRoot`
-- 기존 `InputField (TMP)`와 `Button (Legacy)` 재사용
-- 상태 메시지 TMP 텍스트 및 버튼 Submit 이벤트
-- `AICommandManager.useMockResponse = true` 기본값
+- `Use Mock Response`: 끔
+- `Function URL`: 배포 후 출력되는 `https://sandwich-command-api.<subdomain>.workers.dev`
 
-현재 양배추와 토마토는 `Assets/Resources`의 실제 FBX 및 씬 오브젝트에 연결되어 있다. 다른 재료는 실제 모델이 준비되면 `Assets/ScriptableObjects/IngredientPrefabDatabase.asset`에서 같은 stateId 행에 연결한다.
+## Cloudflare Worker 설정 및 배포
 
-## Mock 테스트
-
-GameScene에서 Play 후 다음 명령을 입력하고 RUN 버튼을 누른다.
-
-`빵 봉지를 열고 빵을 꺼내서 얇게 잘라`
-
-기본 빵 테스트에서는 Mock이 `Open bread`, `TakeOff bread M`, `Cut bread S`를 순서대로 실행한다.
-
-양배추는 Mock에서도 실제 입력을 인식한다. `양배추를 작게 잘라`, `양배추를 적당히 잘라`, `양배추를 크게 잘라`를 입력하면 각각 Cut S/M/L로 처리되고 씬의 양배추가 `양배추_조각.fbx`로 교체된다.
-
-## 남은 게임 설정
-
-- `SandwichGameSystem > SandwichValidator`에 최종 정답 레시피의 재료/stateId 순서를 입력한다.
-- 임시 Cube를 실제 재료 프리팹으로 교체한다.
-- 실제 서버를 쓸 때 `AICommandManager`의 `Use Mock Response`를 끄고 Function URL을 입력한다.
-
-## Firebase/OpenAI 설정
-
-Cloud Functions 배포에는 Blaze 요금제와 `OPENAI_API_KEY` Secret이 필요하다. 로컬 Mock은 필요 없다.
+요구 사항은 Node.js, pnpm, 무료 Cloudflare 계정입니다. pnpm이 없다면 먼저 `corepack enable`로 활성화합니다.
 
 ```powershell
 cd Server/functions
-npm install
-npm run build
-cd ..
-firebase login
-firebase use YOUR_FIREBASE_PROJECT_ID
-firebase functions:secrets:set OPENAI_API_KEY
-firebase deploy --only functions:interpretSandwichCommand
+pnpm install
+pnpm exec wrangler login
+pnpm exec wrangler secret put OPENAI_API_KEY
+pnpm deploy
 ```
 
-`Server/.firebaserc`의 프로젝트 ID를 바꾸고, `Server/functions/.env.YOUR_FIREBASE_PROJECT_ID`를 로컬에 만든다.
+`secret put` 명령이 값을 물으면 OpenAI API 키를 붙여 넣습니다. 키는 `wrangler.jsonc`나 Unity 프로젝트에 기록하지 않습니다.
+
+배포 후 터미널에 표시되는 Worker URL을 `Assets/Scenes/GameScene.unity`의 `AICommandManager > Function URL`에 입력합니다. 코드 기본값에 있는 `YOUR_SUBDOMAIN`도 실제 Cloudflare 서브도메인으로 바꿀 수 있습니다.
+
+## 허용할 WebGL 주소 설정
+
+`Server/functions/wrangler.jsonc`의 `ALLOWED_ORIGINS`에 실제 WebGL 호스팅 주소를 쉼표로 추가합니다. Origin은 경로 없이 스킴과 호스트만 적습니다.
+
+```json
+"ALLOWED_ORIGINS": "https://game.example.com,http://localhost:8080"
+```
+
+변경 후 `pnpm deploy`를 다시 실행합니다. Unity 에디터처럼 `Origin` 헤더가 없는 요청은 허용되지만, 브라우저 WebGL 요청은 목록에 있는 Origin만 허용됩니다.
+
+## 로컬 실행
+
+`Server/functions/.dev.vars` 파일을 만들고 아래처럼 입력합니다. 이 파일은 Git에서 제외됩니다.
 
 ```dotenv
-OPENAI_MODEL=gpt-5.6-sol
-ALLOWED_ORIGINS=https://YOUR_WEBGL_HOST.example,http://localhost:8080
+OPENAI_API_KEY=YOUR_OPENAI_API_KEY
 ```
 
-Emulator:
+그다음 실행합니다.
 
 ```powershell
-cd Server
-firebase emulators:start --only functions
+cd Server/functions
+pnpm dev
 ```
 
-일반적인 로컬 URL은 `http://127.0.0.1:5001/PROJECT_ID/asia-northeast3/interpretSandwichCommand`다.
+기본 로컬 주소는 Wrangler가 터미널에 출력합니다. 로컬 WebGL 테스트 시 그 주소를 Unity의 Function URL로 사용합니다.
 
-## WebGL
+## 점검
 
-Build Settings에서 WebGL로 전환하고 `GameStartMenu`, `GameScene` 순서가 유지되는지 확인한다. HTTPS로 호스팅할 때 Function URL도 HTTPS여야 하며 실제 호스팅 Origin을 `ALLOWED_ORIGINS`에 추가해야 한다.
+```powershell
+cd Server/functions
+pnpm test
+```
 
-## Git
+OpenAI API 사용료는 Cloudflare와 별개입니다. Cloudflare Workers 무료 한도를 초과하면 무료 플랜에서는 추가 요청이 실패하며 자동으로 유료 과금되지 않습니다.
 
-커밋해야 하는 것: `Assets`와 `.meta`, `Packages`, `ProjectSettings`, `Server/functions/src`, Firebase 설정 파일.
+## Git 제외 대상
 
-커밋하지 않는 것: `Library`, `Temp`, `Logs`, `UserSettings`, `Build`, `node_modules`, `Server/functions/lib`, `.env*`, API 키와 서비스 계정 JSON.
+`Library`, `Temp`, `Logs`, `UserSettings`, `Build`, `node_modules`, `.dev.vars`, API 키를 커밋하지 않습니다.

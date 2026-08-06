@@ -109,9 +109,11 @@ namespace SandwichGame.Editor
             Dictionary<string,GameObject> old=new Dictionary<string,GameObject>();foreach(IngredientPrefabEntry e in database.entries)if(e!=null&&!string.IsNullOrEmpty(e.stateId)&&e.prefab!=null&&!AssetDatabase.GetAssetPath(e.prefab).StartsWith(GeneratedPrefabFolder,StringComparison.Ordinal))old[e.stateId]=e.prefab;
             SortedSet<string> ids=new SortedSet<string>();foreach(StateTransitionData t in transitions){ids.Add(t.sourceStateId);ids.Add(t.resultStateId);}ids.Add("TOMATO_SLICE_STACK");ids.Add("CABBAGE_PIECE");database.entries.Clear();
             GameObject cabbageWhole=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/양배추/양배추_한통.fbx");
-            GameObject cabbageCut=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/양배추/양배추_조각.fbx");
+            GameObject cabbageHalf=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/양배추/양배추_반통.fbx");
+            GameObject cabbagePiece=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/양배추/양배추_조각.fbx");
+            GameObject cabbageShredded=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/양배추/양배추_채.fbx");
             GameObject tomato=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/토마토/TOMATO/260805_tomato.fbx");
-            foreach(string id in ids){GameObject prefab=null;if(id=="CABBAGE_PIECE")prefab=cabbageWhole;else if(id.EndsWith("_CUT_CABBAGE_PIECE",StringComparison.Ordinal))prefab=cabbageCut;else if(id.Contains("TOMATO"))prefab=tomato;else old.TryGetValue(id,out prefab);database.entries.Add(new IngredientPrefabEntry{stateId=id,prefab=prefab});}
+            foreach(string id in ids){GameObject prefab=null;if(id=="CABBAGE_PIECE")prefab=cabbageWhole;else if(id=="L_CUT_CABBAGE_PIECE")prefab=cabbageHalf;else if(id=="M_CUT_CABBAGE_PIECE")prefab=cabbagePiece;else if(id=="S_CUT_CABBAGE_PIECE")prefab=cabbageShredded;else if(id.Contains("TOMATO"))prefab=tomato;else old.TryGetValue(id,out prefab);database.entries.Add(new IngredientPrefabEntry{stateId=id,prefab=prefab});}
         }
 
         private static void RemoveGeneratedPlaceholders(){if(AssetDatabase.IsValidFolder(GeneratedPrefabFolder))AssetDatabase.DeleteAsset(GeneratedPrefabFolder);if(AssetDatabase.IsValidFolder(GeneratedMaterialFolder))AssetDatabase.DeleteAsset(GeneratedMaterialFolder);}

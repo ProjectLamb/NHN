@@ -47,7 +47,7 @@ MonoBehaviour:
     prefab: {fileID: 8422185339436572182, guid: fafd5c70b5f4857448fe38e7c8dea7d9,
       type: 3}
   - stateId: L_CUT_CABBAGE_PIECE
-    prefab: {fileID: 919132149155446097, guid: 6452163c0c5f2f444a2086f6b24b2f05, type: 3}
+    prefab: {fileID: 919132149155446097, guid: 9f58622798c834b429fbaae9eb41dc02, type: 3}
   - stateId: L_CUT_CHEESE_PACK_CLOSED_STACK
     prefab: {fileID: 8722485941612870921, guid: c1f2eb16641b6784aa1371ac87a86e9b,
       type: 3}
@@ -127,7 +127,7 @@ MonoBehaviour:
     prefab: {fileID: 4678791754964848218, guid: 822a20658285d5549bf8b420fd9fa344,
       type: 3}
   - stateId: S_CUT_CABBAGE_PIECE
-    prefab: {fileID: 919132149155446097, guid: 6452163c0c5f2f444a2086f6b24b2f05, type: 3}
+    prefab: {fileID: 919132149155446097, guid: c398aaf435ba0e34daf414c290db718c, type: 3}
   - stateId: S_CUT_CHEESE_PACK_CLOSED_STACK
     prefab: {fileID: 244519058230146103, guid: 74809ca47a889a94a9b512f3fbb18376, type: 3}
   - stateId: S_CUT_CHEESE_PACK_OPENED_STACK

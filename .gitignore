@@ -11,7 +11,5 @@
 *.sln
 *.user
 Server/functions/node_modules/
-Server/functions/lib/
-Server/functions/.env
-Server/functions/.env.*
-firebase-debug*.log
+Server/functions/.dev.vars
+Server/functions/.wrangler/

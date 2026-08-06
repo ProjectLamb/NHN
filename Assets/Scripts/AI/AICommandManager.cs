@@ -3,7 +3,7 @@ namespace SandwichGame.AI
 {
     public class AICommandManager:MonoBehaviour
     {
-        [SerializeField]private string functionUrl="https://asia-northeast3-YOUR_PROJECT.cloudfunctions.net/interpretSandwichCommand";[SerializeField]private bool useMockResponse=true;[SerializeField]private int requestTimeoutSeconds=15;[SerializeField]private IngredientStateManager stateManager;[SerializeField]private ActionExecutor executor;
+        [SerializeField]private string functionUrl="https://sandwich-command-api.YOUR_SUBDOMAIN.workers.dev";[SerializeField]private bool useMockResponse=true;[SerializeField]private int requestTimeoutSeconds=15;[SerializeField]private IngredientStateManager stateManager;[SerializeField]private ActionExecutor executor;
         public event Action<bool,string> RequestStateChanged;public bool IsBusy{get;private set;}
         public void Configure(IngredientStateManager s,ActionExecutor e){stateManager=s;executor=e;}
         public void Interpret(string command){if(IsBusy)return;command=command?.Trim();if(string.IsNullOrEmpty(command)||command.Length>200){RequestStateChanged?.Invoke(false,"명령은 1~200자로 입력하세요.");return;}StartCoroutine(Run(command));}
