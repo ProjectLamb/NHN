@@ -101,7 +101,7 @@ namespace SandwichGame.Editor
             Transform canvas=input.GetComponentInParent<Canvas>().transform;Transform existing=canvas.Find("SandwichStatusText");
             TextMeshProUGUI text=existing!=null?existing.GetComponent<TextMeshProUGUI>():null;
             if(text==null){GameObject go=new GameObject("SandwichStatusText",typeof(RectTransform),typeof(CanvasRenderer),typeof(TextMeshProUGUI));go.transform.SetParent(canvas,false);text=go.GetComponent<TextMeshProUGUI>();RectTransform r=text.rectTransform;r.anchorMin=r.anchorMax=new Vector2(.5f,.5f);r.anchoredPosition=new Vector2(0,-385);r.sizeDelta=new Vector2(1150,55);text.alignment=TextAlignmentOptions.Center;text.fontSize=25;text.color=new Color(.25f,1f,.42f);}
-            text.text="Mock 모드 준비 완료";EditorUtility.SetDirty(text);return text;
+            text.text="게임을 시작하면 오늘의 샌드위치 조합이 제시됩니다.";EditorUtility.SetDirty(text);return text;
         }
 
         private static void RefreshRealAssetMappings(IngredientPrefabDatabase database,List<StateTransitionData> transitions)
