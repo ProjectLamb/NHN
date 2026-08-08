@@ -29,16 +29,18 @@ namespace SandwichGame.Actions
             if (actions == null || actions.Length == 0)
             { Report("실행할 동작이 없습니다.", true); HintChanged?.Invoke("힌트: 재료와 행동을 함께 말해주세요. 예) 양배추를 잘라서 올려줘"); return; }
             HintChanged?.Invoke(string.Empty);
-            foreach (SandwichActionData action in actions)
+            for (int i = 0; i < actions.Length; i++)
             {
-                bool ok = TryExecute(action, out string message);
+                SandwichActionData action = actions[i];
+                bool hasLaterPut = HasLaterPutForSameIngredient(actions, i, action);
+                bool ok = TryExecute(action, !hasLaterPut, out string message);
                 Report(message, !ok);
                 if (!ok) HintChanged?.Invoke(BuildHint(action));
                 if (!ok && !continueAfterFailedAction) break;
             }
         }
 
-        private bool TryExecute(SandwichActionData action, out string message)
+        private bool TryExecute(SandwichActionData action, bool autoPutWhenReady, out string message)
         {
             message = "잘못된 action입니다.";
             if (action == null || !Allowed.Contains(action.action)) return false;
@@ -55,11 +57,41 @@ namespace SandwichGame.Actions
                 default: return false;
             }
 
-            if (ok && action.action != "Put" && stateManager.IsReadyToPut(type, out _) &&
-                stateManager.TryGetCurrentPrefab(type, out GameObject prefab, out string stateId))
-                ok = sandwichManager.ShowPreparedIngredient(type, stateId, prefab, out message);
+            // Some natural-language commands prepare a complete ingredient but omit
+            // an explicit Put action. In that case, stack it immediately. If a Put for
+            // the same ingredient appears later in this response, defer to that action
+            // so the layer is not created twice.
+            if (ok && action.action != "Put" && autoPutWhenReady &&
+                stateManager.IsReadyToPut(type, out _) &&
+                stateManager.TryGetCurrentPrefab(type, out GameObject readyPrefab, out string readyStateId))
+            {
+                ok = sandwichManager.TryAddLayer(type, readyStateId, readyPrefab, out message);
+                if (ok)
+                    stateManager.ResetToInitialState(type);
+            }
+
             if (ok) { PlayPresentation(action.action, type, action.amount); message = $"{action.action} {action.targetIngredient} 완료"; }
             return ok;
+        }
+
+        private static bool HasLaterPutForSameIngredient(
+            SandwichActionData[] actions,
+            int currentIndex,
+            SandwichActionData current)
+        {
+            if (current == null || string.IsNullOrEmpty(current.targetIngredient))
+                return false;
+
+            for (int i = currentIndex + 1; i < actions.Length; i++)
+            {
+                SandwichActionData candidate = actions[i];
+                if (candidate != null &&
+                    candidate.action == "Put" &&
+                    string.Equals(candidate.targetIngredient, current.targetIngredient, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+
+            return false;
         }
 
         private string BuildHint(SandwichActionData action)

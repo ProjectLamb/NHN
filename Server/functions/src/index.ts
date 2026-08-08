@@ -12,6 +12,7 @@ interface OpenAIResponse {
 }
 
 const DEFAULT_ORIGINS = [
+  "https://projectlamb.github.io",
   "http://localhost:5000",
   "http://localhost:8080",
   "http://127.0.0.1:5000",
@@ -28,7 +29,14 @@ function corsHeaders(request: Request, env: Env): { headers: Headers; allowed: b
   const allowedOrigins = (env.ALLOWED_ORIGINS ?? DEFAULT_ORIGINS.join(","))
     .split(",")
     .map((value) => value.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .map((value) => {
+      try {
+        return new URL(value).origin;
+      } catch {
+        return value;
+      }
+    });
   const allowed = !origin || allowedOrigins.includes(origin);
 
   if (origin && allowed) headers.set("Access-Control-Allow-Origin", origin);

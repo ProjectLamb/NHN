@@ -214,6 +214,9 @@ namespace SandwichGame.UI
 
         private void OnEnable()
         {
+            if (input != null)
+                input.onSubmit.AddListener(OnInputSubmitted);
+
             if (executor != null)
             {
                 executor.StatusChanged += SetStatus;
@@ -226,6 +229,9 @@ namespace SandwichGame.UI
 
         private void OnDisable()
         {
+            if (input != null)
+                input.onSubmit.RemoveListener(OnInputSubmitted);
+
             if (hintClearCoroutine != null)
             {
                 StopCoroutine(hintClearCoroutine);
@@ -308,6 +314,11 @@ namespace SandwichGame.UI
                 input.text = string.Empty;
                 input.ActivateInputField();
             }
+        }
+
+        private void OnInputSubmitted(string unused)
+        {
+            Submit();
         }
 
         private void UpdateCommandButton()
