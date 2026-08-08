@@ -35,7 +35,7 @@ namespace SandwichGame.Editor
             bool databaseMissing = AssetDatabase.LoadAssetAtPath<StateTransitionDatabase>("Assets/ScriptableObjects/StateTransitionDatabase.asset") == null;
             IngredientPrefabDatabase prefabDatabase = AssetDatabase.LoadAssetAtPath<IngredientPrefabDatabase>("Assets/ScriptableObjects/IngredientPrefabDatabase.asset");
             bool generatedCubesRemain = AssetDatabase.IsValidFolder("Assets/Prefabs/Generated");
-            bool realIngredientMigrationNeeded = prefabDatabase == null || prefabDatabase.setupVersion < 2;
+            bool realIngredientMigrationNeeded = prefabDatabase == null || prefabDatabase.setupVersion < 3;
             if (!databaseMissing && !generatedCubesRemain && !realIngredientMigrationNeeded) return;
             string originalScene = SceneManager.GetActiveScene().path;
             try
@@ -67,7 +67,7 @@ namespace SandwichGame.Editor
             StateTransitionDatabase transitions=LoadOrCreate<StateTransitionDatabase>($"{DataFolder}/StateTransitionDatabase.asset");
             transitions.transitions=DefaultStateTransitions.Build();EditorUtility.SetDirty(transitions);
             IngredientPrefabDatabase prefabs=LoadOrCreate<IngredientPrefabDatabase>($"{DataFolder}/IngredientPrefabDatabase.asset");
-            RefreshRealAssetMappings(prefabs,transitions.transitions);prefabs.setupVersion=2;EditorUtility.SetDirty(prefabs);AssetDatabase.SaveAssets();
+            RefreshRealAssetMappings(prefabs,transitions.transitions);prefabs.setupVersion=3;EditorUtility.SetDirty(prefabs);AssetDatabase.SaveAssets();
             Scene scene=EditorSceneManager.OpenScene("Assets/Scenes/GameScene.unity",OpenSceneMode.Single);
             SetupScene(scene,transitions,prefabs);EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
             Debug.Log($"Sandwich setup complete: {transitions.transitions.Count} transitions, {prefabs.entries.Count} prefab states.");
@@ -85,14 +85,15 @@ namespace SandwichGame.Editor
 
             Transform slots=GetOrCreateChild(root.transform,"IngredientSlots");IngredientView[] views=new IngredientView[6];
             for(int i=0;i<views.Length;i++){IngredientType type=(IngredientType)i;Transform slot=GetOrCreateChild(slots,type+"Slot");slot.position=new Vector3(-5f+i*2f,1.25f,0f);IngredientView view=GetOrAdd<IngredientView>(slot.gameObject);view.Configure(type);views[i]=view;EditorUtility.SetDirty(view);}
-            Transform layerRoot=GetOrCreateChild(root.transform,"SandwichLayerRoot");layerRoot.position=new Vector3(0f,-1.25f,0f);
+            Transform layerRoot=GetOrCreateChild(root.transform,"SandwichLayerRoot");GameObject plate=FindNamedSceneObject(scene,"Plate");if(plate!=null)layerRoot.position=plate.transform.position;
             TMP_Text status=GetOrCreateStatus(input);
             stateManager.Configure(transitions,prefabs,views);sandwichManager.Configure(layerRoot);validator.Configure(sandwichManager);executor.Configure(stateManager,sandwichManager,validator);ai.Configure(stateManager,executor);ui.Configure(input,status,button,ai,executor);
-            GameObject cabbage=FindNamedSceneObject(scene,"양배추");if(cabbage!=null)stateManager.SetInitialSceneObject(IngredientType.Cabbage,"CABBAGE_PIECE",cabbage);
-            GameObject tomato=FindNamedSceneObject(scene,"토마토");if(tomato!=null)stateManager.SetInitialSceneObject(IngredientType.Tomato,"TOMATO_SLICE_STACK",tomato);
+            TextAsset recipeJson=AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Design/UI/MENU/SandwichRecipes.json");
+            Sprite[] recipeImages=new Sprite[5];for(int i=0;i<recipeImages.Length;i++)recipeImages[i]=AssetDatabase.LoadAssetAtPath<Sprite>($"Assets/Design/UI/MENU/Recipe{i+1}.png");
+            ui.ConfigureRecipes(recipeJson,recipeImages);
             EditorUtility.SetDirty(stateManager);EditorUtility.SetDirty(sandwichManager);EditorUtility.SetDirty(validator);EditorUtility.SetDirty(executor);EditorUtility.SetDirty(ai);EditorUtility.SetDirty(ui);
             bool already=false;for(int i=0;i<button.onClick.GetPersistentEventCount();i++)if(button.onClick.GetPersistentTarget(i)==ui)already=true;if(!already)UnityEventTools.AddPersistentListener(button.onClick,ui.Submit);
-            Text legacyLabel=button.GetComponentInChildren<Text>(true);if(legacyLabel!=null){legacyLabel.text="RUN";EditorUtility.SetDirty(legacyLabel);} input.placeholder.GetComponent<TMP_Text>().text="샌드위치 명령을 입력하세요";
+            Text legacyLabel=button.GetComponentInChildren<Text>(true);if(legacyLabel!=null){legacyLabel.text="명령 (0/6)";EditorUtility.SetDirty(legacyLabel);} input.placeholder.GetComponent<TMP_Text>().text="샌드위치 명령을 입력하세요";
             Selection.activeGameObject=root;
         }
 

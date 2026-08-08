@@ -108,6 +108,18 @@ using UnityEngine.UI;
 
 namespace SandwichGame.UI
 {
+    [System.Serializable]
+    public class SandwichRecipeCollection { public SandwichRecipeDefinition[] recipes; }
+
+    [System.Serializable]
+    public class SandwichRecipeDefinition
+    {
+        public string recipeId;
+        public string displayName;
+        public string sourceImage;
+        public string[] layers;
+    }
+
     public class CommandInputUI : MonoBehaviour
     {
         // =========================================================
@@ -143,7 +155,7 @@ namespace SandwichGame.UI
         // 게임 기본 설정
         // =========================================================
 
-        private const float RoundSeconds = 50f;
+        private const float RoundSeconds = 100f;
 
         [SerializeField] private TMP_InputField input;
         [SerializeField] private TMP_Text statusText;
@@ -152,12 +164,19 @@ namespace SandwichGame.UI
         [SerializeField] private AICommandManager manager;
         [SerializeField] private ActionExecutor executor;
 
+        [Header("Recipe Menu")]
+        [SerializeField] private TextAsset recipeJson;
+        [SerializeField] private Sprite[] recipeImages;
+
         private readonly List<IngredientType> missionRecipe =
             new List<IngredientType>();
 
         private SandwichManager sandwichManager;
         private TMP_Text timerText;
         private TMP_Text scoreText;
+        private TMP_Text hintText;
+        private Text legacyHintText;
+        private Coroutine hintClearCoroutine;
 
         private GameObject gameEndPanel;
         private GameObject loadingCanvas;
@@ -165,6 +184,9 @@ namespace SandwichGame.UI
         private float remainingTime;
         private bool timerStarted;
         private bool roundEnded;
+
+        private const int MaxCommandRequests = 6;
+        private int commandRequestCount;
 
         // =========================================================
         // Unity 생명주기
@@ -184,10 +206,19 @@ namespace SandwichGame.UI
             executor = e;
         }
 
+        public void ConfigureRecipes(TextAsset json, Sprite[] images)
+        {
+            recipeJson = json;
+            recipeImages = images;
+        }
+
         private void OnEnable()
         {
             if (executor != null)
+            {
                 executor.StatusChanged += SetStatus;
+                executor.HintChanged += SetHint;
+            }
 
             if (manager != null)
                 manager.RequestStateChanged += OnRequest;
@@ -195,8 +226,16 @@ namespace SandwichGame.UI
 
         private void OnDisable()
         {
+            if (hintClearCoroutine != null)
+            {
+                StopCoroutine(hintClearCoroutine);
+                hintClearCoroutine = null;
+            }
             if (executor != null)
+            {
                 executor.StatusChanged -= SetStatus;
+                executor.HintChanged -= SetHint;
+            }
 
             if (manager != null)
                 manager.RequestStateChanged -= OnRequest;
@@ -218,6 +257,7 @@ namespace SandwichGame.UI
 
             remainingTime = RoundSeconds;
             UpdateTimer();
+            UpdateCommandButton();
         }
 
         private void Update()
@@ -256,10 +296,31 @@ namespace SandwichGame.UI
         {
             if (!roundEnded &&
                 manager != null &&
-                input != null)
+                input != null &&
+                !manager.IsBusy &&
+                commandRequestCount < MaxCommandRequests &&
+                !string.IsNullOrWhiteSpace(input.text))
             {
-                manager.Interpret(input.text);
+                string command = input.text;
+                commandRequestCount++;
+                UpdateCommandButton();
+                manager.Interpret(command);
+                input.text = string.Empty;
+                input.ActivateInputField();
             }
+        }
+
+        private void UpdateCommandButton()
+        {
+            if (executeButton == null) return;
+            TMP_Text tmpLabel = executeButton.GetComponentInChildren<TMP_Text>(true);
+            if (tmpLabel != null) tmpLabel.text = $"명령 ({commandRequestCount}/{MaxCommandRequests})";
+            else
+            {
+                Text legacyLabel = executeButton.GetComponentInChildren<Text>(true);
+                if (legacyLabel != null) legacyLabel.text = $"명령 ({commandRequestCount}/{MaxCommandRequests})";
+            }
+            executeButton.interactable = commandRequestCount < MaxCommandRequests && !roundEnded && (manager == null || !manager.IsBusy);
         }
 
         public void RestartGame()
@@ -280,10 +341,35 @@ namespace SandwichGame.UI
             SceneManager.LoadScene("GameStartMenu");
         }
 
+        public void ProvideToCustomer()
+        {
+            EndRound();
+        }
+
         private void SetStatus(string message)
         {
             if (statusText != null)
                 statusText.text = message;
+        }
+
+        private void SetHint(string message)
+        {
+            if (hintClearCoroutine != null)
+            {
+                StopCoroutine(hintClearCoroutine);
+                hintClearCoroutine = null;
+            }
+            if (hintText != null) hintText.text = message;
+            else if (legacyHintText != null) legacyHintText.text = message;
+            if (!string.IsNullOrEmpty(message)) hintClearCoroutine = StartCoroutine(ClearHintAfterDelay());
+        }
+
+        private System.Collections.IEnumerator ClearHintAfterDelay()
+        {
+            yield return new WaitForSecondsRealtime(1f);
+            if (hintText != null) hintText.text = string.Empty;
+            else if (legacyHintText != null) legacyHintText.text = string.Empty;
+            hintClearCoroutine = null;
         }
 
         private void OnRequest(bool busy, string message)
@@ -291,7 +377,7 @@ namespace SandwichGame.UI
             if (executeButton != null)
             {
                 executeButton.interactable =
-                    !busy && !roundEnded;
+                    !busy && !roundEnded && commandRequestCount < MaxCommandRequests;
             }
 
             SetStatus(message);
@@ -302,6 +388,62 @@ namespace SandwichGame.UI
         // =========================================================
 
         private void ShowRandomMission()
+        {
+            if (recipeJson == null)
+            {
+                SetStatus("SandwichRecipes.json이 연결되지 않았습니다.");
+                return;
+            }
+
+            SandwichRecipeCollection collection = JsonUtility.FromJson<SandwichRecipeCollection>(recipeJson.text);
+            if (collection == null || collection.recipes == null || collection.recipes.Length == 0)
+            {
+                SetStatus("레시피 JSON에 사용할 레시피가 없습니다.");
+                return;
+            }
+
+            SandwichRecipeDefinition selected = collection.recipes[Random.Range(0, collection.recipes.Length)];
+            missionRecipe.Clear();
+            if (selected.layers != null)
+                foreach (string layer in selected.layers)
+                    if (System.Enum.TryParse(layer, true, out IngredientType type)) missionRecipe.Add(type);
+
+            Image menuImage = ResolveMenuImage();
+            Sprite selectedSprite = FindRecipeSprite(selected.sourceImage);
+            if (menuImage != null && selectedSprite != null)
+            {
+                menuImage.sprite = selectedSprite;
+                menuImage.preserveAspect = true;
+            }
+
+            TMP_Text target = ResolveMenuText();
+            if (target != null && target != statusText)
+            {
+                StringBuilder mission = new StringBuilder(selected.displayName);
+                foreach (IngredientType type in missionRecipe) mission.Append('\n').Append(KoreanName(type));
+                target.text = mission.ToString();
+            }
+        }
+
+        private Image ResolveMenuImage()
+        {
+            Canvas canvas = input != null ? input.GetComponentInParent<Canvas>() : null;
+            if (canvas == null) return null;
+            foreach (Transform child in canvas.GetComponentsInChildren<Transform>(true))
+                if (child.name == "Menu") return child.GetComponent<Image>();
+            return null;
+        }
+
+        private Sprite FindRecipeSprite(string sourceImage)
+        {
+            if (recipeImages == null || string.IsNullOrEmpty(sourceImage)) return null;
+            string spriteName = sourceImage.EndsWith(".png", System.StringComparison.OrdinalIgnoreCase)
+                ? sourceImage.Substring(0, sourceImage.Length - 4) : sourceImage;
+            foreach (Sprite sprite in recipeImages) if (sprite != null && sprite.name == spriteName) return sprite;
+            return null;
+        }
+
+        private void ShowLegacyRandomMission()
         {
             TMP_Text target = ResolveMenuText();
 
@@ -382,6 +524,17 @@ namespace SandwichGame.UI
                 else if (child.name == "Score")
                 {
                     scoreText = child.GetComponent<TMP_Text>();
+                }
+                else if (child.name == "Hint")
+                {
+                    hintText = child.GetComponent<TMP_Text>();
+                    legacyHintText = child.GetComponent<Text>();
+                    SetHint(string.Empty);
+                }
+                else if (child.name == "GetSandwichToCosBT")
+                {
+                    Button button = child.GetComponent<Button>();
+                    if (button != null) button.onClick.AddListener(ProvideToCustomer);
                 }
                 else if (child.name == "다시하기")
                 {
