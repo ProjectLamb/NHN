@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "layerOrder": "bottom_to_top",
+  "validationRules": {
+    "exactLayerOrder": true,
+    "exactLayerCount": true,
+    "allowExtraIngredients": false
+  },
+  "ingredientIds": [
+    "bread",
+    "cabbage",
+    "mayonnaise",
+    "cheese",
+    "tomato",
+    "ham"
+  ],
+  "recipes": [
+    {
+      "recipeId": "recipe_01",
+      "displayName": "Double Ham Sandwich",
+      "sourceImage": "Recipe1.png",
+      "layers": [
+        "bread",
+        "cabbage",
+        "mayonnaise",
+        "ham",
+        "cheese",
+        "tomato",
+        "ham",
+        "bread"
+      ]
+    },
+    {
+      "recipeId": "recipe_02",
+      "displayName": "Double Cabbage Mayo Sandwich",
+      "sourceImage": "Recipe2.png",
+      "layers": [
+        "bread",
+        "mayonnaise",
+        "cabbage",
+        "tomato",
+        "ham",
+        "cheese",
+        "mayonnaise",
+        "cabbage",
+        "bread"
+      ]
+    },
+    {
+      "recipeId": "recipe_03",
+      "displayName": "Double Cheese Sandwich",
+      "sourceImage": "Recipe3.png",
+      "layers": [
+        "bread",
+        "mayonnaise",
+        "cabbage",
+        "cheese",
+        "tomato",
+        "ham",
+        "cheese",
+        "bread"
+      ]
+    },
+    {
+      "recipeId": "recipe_04",
+      "displayName": "Double Tomato Sandwich",
+      "sourceImage": "Recipe4.png",
+      "layers": [
+        "bread",
+        "cheese",
+        "tomato",
+        "cabbage",
+        "mayonnaise",
+        "ham",
+        "tomato",
+        "bread"
+      ]
+    },
+    {
+      "recipeId": "recipe_05",
+      "displayName": "Classic Sandwich",
+      "sourceImage": "Recipe5.png",
+      "layers": [
+        "bread",
+        "cabbage",
+        "mayonnaise",
+        "cheese",
+        "tomato",
+        "ham",
+        "bread"
+      ]
+    }
+  ]
+}
