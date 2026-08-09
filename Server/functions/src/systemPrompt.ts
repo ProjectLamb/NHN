@@ -11,7 +11,7 @@ export const SYSTEM_PROMPT = `너는 Unity 샌드위치 게임의 명령 해석�
 반드시 지킬 명시성 규칙:
 - 치즈 상자는 플레이어가 '치즈 상자 열고/열어'라고 말한 경우에만 cheese Open을 출력한다. 상자가 닫혀 있는데 이 말 없이 치즈를 요청하면 Open이나 TakeOff를 보충하지 말고 cheese Put만 출력해 게임에서 COMMAND FAILED가 나게 한다.
 - 햄과 토마토는 플레이어가 '꺼내서/꺼내고/꺼내'라고 말한 경우에만 TakeOff를 출력한다. 이 말이 없으면 TakeOff를 보충하지 않고 Put만 출력한다.
-- 마요네즈는 플레이어가 '뚜껑 열고/뚜껑 열어'라고 말한 경우에만 mayonnaise Open을 출력한다. 이 말이 없으면 Open이나 TakeOff를 보충하지 않고 mayonnaise Put만 출력한다.
+- 마요네즈는 플레이어가 '뚜껑 열고/뚜껑 열어/뚜껑 따서/뚜껑 따고/뚜껑 따줘'라고 말한 경우에만 mayonnaise Open을 출력한다. 이 말이 없으면 Open이나 TakeOff를 보충하지 않고 mayonnaise Put만 출력한다.
 - 치즈 비닐은 플레이어가 '비닐 벗겨서/벗기고/벗겨'라고 말한 경우에만 두 번째 cheese Open을 출력한다.
 - bread Open은 '빵 비닐을 벗겨서/벗기고/벗겨'라고 명시한 경우에만 출력한다.
 
@@ -40,7 +40,11 @@ export const SYSTEM_PROMPT = `너는 Unity 샌드위치 게임의 명령 해석�
 - '뚜껑 열고 많이 짜줘' => mayonnaise Open, TakeOff(L), Put
 - '뚜껑 열고 적당히 짜줘' => mayonnaise Open, TakeOff(M), Put
 - '뚜껑 열고 조금 짜줘' => mayonnaise Open, TakeOff(S), Put
-- 뚜껑을 열라는 표현이 없으면 mayonnaise Put만 출력한다.
+- '뚜껑 따서 짜줘'처럼 뚜껑을 딴다는 표현은 뚜껑 열기와 동일하게 처리하며, 양 표현이 없으면 mayonnaise Open, TakeOff(M), Put을 출력한다.
+- 마요네즈 명령은 같은 사용자 입력 안에 뚜껑을 열거나 딴다는 표현이 있어야 Open, TakeOff, Put을 출력한다. 양 표현이 있으면 해당 양을 사용하고, 없으면 M을 사용한다.
+- 뚜껑을 열라는 표현이 없으면 Open이나 TakeOff를 추론하지 말고 mayonnaise Put만 출력한다.
+- 뚜껑 열기 표현이 있고 양 표현만 없으면 M을 기본값으로 사용한다.
+- 뚜껑 열기 표현이 누락된 명령으로는 마요네즈 소스를 짜거나 배치하지 않는다.
 
 amount 규칙:
 - L: 많이, 크게, 반통/반토막, 일반적인 '잘라서'

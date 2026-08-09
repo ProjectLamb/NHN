@@ -238,6 +238,22 @@ namespace SandwichGame.Actions
             {
                 SandwichActionData action = actions[i];
 
+                if (action != null &&
+                    action.action == "Cut" &&
+                    !HasLaterPutForSameIngredient(actions, i, action))
+                {
+                    string missingPutHint = BuildMissingPutHint(action);
+                    Report("COMMAND FAILED", true);
+                    ShowHint(missingPutHint);
+
+                    if (!continueAfterFailedAction)
+                    {
+                        break;
+                    }
+
+                    continue;
+                }
+
                 bool ok = TryExecute(
                     action,
                     out string message
@@ -255,6 +271,63 @@ namespace SandwichGame.Actions
                     break;
                 }
             }
+        }
+
+        private static bool HasLaterPutForSameIngredient(
+            SandwichActionData[] actions,
+            int currentIndex,
+            SandwichActionData current)
+        {
+            if (current == null ||
+                string.IsNullOrEmpty(current.targetIngredient))
+            {
+                return false;
+            }
+
+            for (int i = currentIndex + 1; i < actions.Length; i++)
+            {
+                SandwichActionData candidate = actions[i];
+
+                if (candidate != null &&
+                    candidate.action == "Put" &&
+                    string.Equals(
+                        candidate.targetIngredient,
+                        current.targetIngredient,
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static string BuildMissingPutHint(
+            SandwichActionData action)
+        {
+            string ingredient =
+                string.Equals(
+                    action.targetIngredient,
+                    "cabbage",
+                    StringComparison.OrdinalIgnoreCase)
+                    ? "양배추를"
+                    : string.Equals(
+                        action.targetIngredient,
+                        "bread",
+                        StringComparison.OrdinalIgnoreCase)
+                        ? "빵을"
+                        : "재료를";
+
+            return
+                "COMMAND FAILED\n" +
+                ingredient + " 자른 뒤 올려달라고 함께 말해주세요.";
+        }
+
+        public void RejectCommand(string hint)
+        {
+            const string failure = "COMMAND FAILED";
+            Report(failure, true);
+            ShowHint(failure + "\n" + hint);
         }
 
         public void ResetAll()
@@ -438,6 +511,14 @@ namespace SandwichGame.Actions
                         "비닐을 벗겨서 올려주세요.";
 
                 case IngredientType.Mayonnaise:
+                    if (state == "MAYO_BOTTLE_CLOSED")
+                    {
+                        return
+                            "COMMAND FAILED\n" +
+                            "마요네즈 뚜껑을 먼저 따고, " +
+                            "조금, 적당히 또는 많이 짜주세요.";
+                    }
+
                     return
                         "COMMAND FAILED\n" +
                         "마요네즈는 조금, 적당히 또는 많이 " +
@@ -723,10 +804,22 @@ namespace SandwichGame.Actions
             // Mayo_tong의 마요네즈 Blend Shape 찾기
             SkinnedMeshRenderer mayo =
                 FindBlendShapeRenderer(
-                    "Mayo_tong",
+                    sourcingBottle,
                     "Mayo Use",
                     out int index
                 );
+
+            if (mayo != null)
+            {
+                mayo.enabled = true;
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "MayoBottleSoucing에서 Mayo Use Blend Shape를 " +
+                    "찾지 못했습니다."
+                );
+            }
 
             float target =
                 amount == "L"
@@ -795,13 +888,11 @@ namespace SandwichGame.Actions
 
         private static SkinnedMeshRenderer
             FindBlendShapeRenderer(
-                string rootName,
+                GameObject root,
                 string shapeName,
                 out int index)
         {
             index = -1;
-
-            GameObject root = FindGameObject(rootName);
 
             if (root == null)
             {
