@@ -185,7 +185,7 @@ namespace SandwichGame.UI
         private bool timerStarted;
         private bool roundEnded;
 
-        private const int MaxCommandRequests = 6;
+        private const int MaxCommandRequests = 15;
         private int commandRequestCount;
 
         // =========================================================

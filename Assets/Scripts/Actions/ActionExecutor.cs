@@ -238,16 +238,8 @@ namespace SandwichGame.Actions
             {
                 SandwichActionData action = actions[i];
 
-                bool hasLaterPut =
-                    HasLaterPutForSameIngredient(
-                        actions,
-                        i,
-                        action
-                    );
-
                 bool ok = TryExecute(
                     action,
-                    !hasLaterPut,
                     out string message
                 );
 
@@ -265,9 +257,16 @@ namespace SandwichGame.Actions
             }
         }
 
+        public void ResetAll()
+        {
+            sandwichManager?.ClearAll();
+            stateManager?.ResetAll();
+            HideHint();
+            Report("모든 재료를 초기화했습니다.", false);
+        }
+
         private bool TryExecute(
             SandwichActionData action,
-            bool autoPutWhenReady,
             out string message)
         {
             message = "잘못된 action입니다.";
@@ -347,28 +346,6 @@ namespace SandwichGame.Actions
              * 동일 응답 안에 Put 명령이 뒤에 있다면
              * 중복 생성을 막기 위해 자동 배치하지 않는다.
              */
-            if (ok &&
-                action.action != "Put" &&
-                autoPutWhenReady &&
-                stateManager.IsReadyToPut(type, out _) &&
-                stateManager.TryGetCurrentPrefab(
-                    type,
-                    out GameObject readyPrefab,
-                    out string readyStateId))
-            {
-                ok = sandwichManager.TryAddLayer(
-                    type,
-                    readyStateId,
-                    readyPrefab,
-                    out message
-                );
-
-                if (ok)
-                {
-                    stateManager.ResetToInitialState(type);
-                }
-            }
-
             if (ok)
             {
                 PlayPresentation(
@@ -383,38 +360,6 @@ namespace SandwichGame.Actions
             }
 
             return ok;
-        }
-
-        private static bool HasLaterPutForSameIngredient(
-            SandwichActionData[] actions,
-            int currentIndex,
-            SandwichActionData current)
-        {
-            if (current == null ||
-                string.IsNullOrEmpty(
-                    current.targetIngredient))
-            {
-                return false;
-            }
-
-            for (int i = currentIndex + 1;
-                 i < actions.Length;
-                 i++)
-            {
-                SandwichActionData candidate = actions[i];
-
-                if (candidate != null &&
-                    candidate.action == "Put" &&
-                    string.Equals(
-                        candidate.targetIngredient,
-                        current.targetIngredient,
-                        StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         private string BuildHint(

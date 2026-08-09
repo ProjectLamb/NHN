@@ -22,8 +22,30 @@ namespace SandwichGame.Ingredients
         }
         public IngredientRuntimeState GetState(IngredientType type)=>states.Find(x=>x.ingredientType==type);
         public bool TryGetCurrentPrefab(IngredientType type,out GameObject prefab,out string stateId){IngredientRuntimeState s=GetState(type);stateId=s?.currentStateId;prefab=null;return s!=null&&prefabDatabase!=null&&prefabDatabase.TryGetPrefab(stateId,out prefab);}
-        public bool IsReadyToPut(IngredientType type,out string error){string id=GetState(type)?.currentStateId??string.Empty;bool ready=id.Contains("_CUT_BREAD_LOAF")||id.Contains("_CUT_CABBAGE_PIECE")||id.Contains("_TAKEOFF_TOMATO_SLICE")||id.Contains("_TAKEOFF_HAM_SLICE")||id.Contains("_OPENED_CHEESE_SLICE")||id.Contains("_TAKEOFF_MAYO");error=ready?null:$"{type} 재료 준비가 아직 끝나지 않았습니다.";return ready;}
+        public bool IsReadyToPut(IngredientType type,out string error)
+        {
+            string id=GetState(type)?.currentStateId??string.Empty;
+            bool ready=
+                id=="BREAD_BAG_CLOSED_LOAF"||
+                id=="BREAD_LOAF"||
+                id.Contains("_CUT_BREAD_BAG_CLOSED_LOAF")||
+                id.Contains("_CUT_BREAD_LOAF")||
+                id=="CABBAGE_PIECE"||
+                id.Contains("_CUT_CABBAGE_PIECE")||
+                id.Contains("_TAKEOFF_TOMATO_SLICE")||
+                id.Contains("_TAKEOFF_HAM_SLICE")||
+                id.Contains("_TAKEOFF_CHEESE_SLICE_WRAPPED")||
+                id.Contains("_OPENED_CHEESE_SLICE")||
+                id.Contains("_TAKEOFF_MAYO");
+            error=ready?null:$"{type} 재료 준비가 아직 끝나지 않았습니다.";
+            return ready;
+        }
         public void ResetToInitialState(IngredientType type){IngredientRuntimeState state=GetState(type);if(state==null)return;state.currentStateId=InitialStateId(type);state.currentObject=null;}
+        public void ResetAll()
+        {
+            foreach(IngredientType type in System.Enum.GetValues(typeof(IngredientType)))
+                ResetToInitialState(type);
+        }
         public IngredientStateSnapshot CreateSnapshot()=>new IngredientStateSnapshot{bread=Id(IngredientType.Bread),ham=Id(IngredientType.Ham),tomato=Id(IngredientType.Tomato),cheese=Id(IngredientType.Cheese),mayonnaise=Id(IngredientType.Mayonnaise),cabbage=Id(IngredientType.Cabbage)};
         private string Id(IngredientType t)=>GetState(t)?.currentStateId??string.Empty;private Transform FindSlot(IngredientType t){if(ingredientViews!=null)foreach(IngredientView v in ingredientViews)if(v!=null&&v.IngredientType==t)return v.Slot;return transform;}
         private void EnsureStates(){Add(IngredientType.Bread,"BREAD_BAG_CLOSED_LOAF");Add(IngredientType.Ham,"HAM_PACK_CLOSED_STACK");Add(IngredientType.Tomato,"TOMATO_SLICE_STACK");Add(IngredientType.Cheese,"CHEESE_PACK_CLOSED_STACK");Add(IngredientType.Mayonnaise,"MAYO_BOTTLE_CLOSED");Add(IngredientType.Cabbage,"CABBAGE_PIECE");}

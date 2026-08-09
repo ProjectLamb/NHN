@@ -15,9 +15,12 @@ MonoBehaviour:
   setupVersion: 3
   entries:
   - {stateId: BREAD_BAG_CLOSED_LOAF, prefab: {fileID: 7873784071735534786, guid: 74692e00e366670478b8858acc54c54b, type: 3}}
-  - {stateId: BREAD_BAG_OPENED_LOAF, prefab: {fileID: 2444661987240967664, guid: e37f645a3fc2f6346890b2a2729067bd, type: 3}}
-  - {stateId: L_CUT_BREAD_LOAF, prefab: {fileID: 2444661987240967664, guid: e37f645a3fc2f6346890b2a2729067bd, type: 3}}
-  - {stateId: M_CUT_BREAD_LOAF, prefab: {fileID: 8927244175896299963, guid: b56860d34e0136549817e354e504cc40, type: 3}}
+  - {stateId: L_CUT_BREAD_BAG_CLOSED_LOAF, prefab: {fileID: 1416335459512811180, guid: 497d938901e04724598575077905351e, type: 3}}
+  - {stateId: M_CUT_BREAD_BAG_CLOSED_LOAF, prefab: {fileID: 9069351697945622401, guid: ba5c00a455b5a774abbb3fa797a35f3c, type: 3}}
+  - {stateId: S_CUT_BREAD_BAG_CLOSED_LOAF, prefab: {fileID: 9069351697945622401, guid: ba5c00a455b5a774abbb3fa797a35f3c, type: 3}}
+  - {stateId: BREAD_LOAF, prefab: {fileID: 2444661987240967664, guid: e37f645a3fc2f6346890b2a2729067bd, type: 3}}
+  - {stateId: L_CUT_BREAD_LOAF, prefab: {fileID: 8927244175896299963, guid: b56860d34e0136549817e354e504cc40, type: 3}}
+  - {stateId: M_CUT_BREAD_LOAF, prefab: {fileID: 2343741325146066131, guid: 77dfdb70cf46bae49968619b545ec4ea, type: 3}}
   - {stateId: S_CUT_BREAD_LOAF, prefab: {fileID: 2343741325146066131, guid: 77dfdb70cf46bae49968619b545ec4ea, type: 3}}
   - {stateId: CABBAGE_PIECE, prefab: {fileID: 3429700601350062717, guid: 2ea371d8e172d414a80f818a83ff8b96, type: 3}}
   - {stateId: L_CUT_CABBAGE_PIECE, prefab: {fileID: 3593396507569956670, guid: 3e936d039866c0b459cadd57dde25881, type: 3}}
@@ -40,6 +43,7 @@ MonoBehaviour:
   - {stateId: M_OPENED_CHEESE_SLICE, prefab: {fileID: 1540341007650732741, guid: 4c12982bd10c4084f89c5f7a048af369, type: 3}}
   - {stateId: S_OPENED_CHEESE_SLICE, prefab: {fileID: 1540341007650732741, guid: 4c12982bd10c4084f89c5f7a048af369, type: 3}}
   - {stateId: MAYO_BOTTLE_CLOSED, prefab: {fileID: 2264824798515743759, guid: c9f34197746a84a40a60a96c00ebb7fc, type: 3}}
+  - {stateId: MAYO_BOTTLE_OPENED, prefab: {fileID: 2264824798515743759, guid: c9f34197746a84a40a60a96c00ebb7fc, type: 3}}
   - {stateId: L_TAKEOFF_MAYO, prefab: {fileID: 927028938750892381, guid: 5e5853615afcb4840a6874be8834eaf7, type: 3}}
   - {stateId: M_TAKEOFF_MAYO, prefab: {fileID: 2264824798515743759, guid: c9f34197746a84a40a60a96c00ebb7fc, type: 3}}
   - {stateId: S_TAKEOFF_MAYO, prefab: {fileID: 7476019674471469149, guid: 33ada94ee0c66b64d92509c3e42c1b2c, type: 3}}

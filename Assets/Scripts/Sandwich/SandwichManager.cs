@@ -17,6 +17,17 @@ namespace SandwichGame.Sandwich
         public IReadOnlyList<SandwichLayerData> Layers => layers;
         public void Configure(Transform root) => layerRoot = root;
 
+        public void ClearAll()
+        {
+            foreach (SandwichLayerData layer in layers)
+                if (layer != null && layer.instance != null)
+                    Destroy(layer.instance);
+
+            layers.Clear();
+            stackInitialized = false;
+            stackPoint = Vector3.zero;
+        }
+
         public bool TryAddLayer(IngredientType type, string stateId, GameObject prefab, out string error)
         {
             error = null;

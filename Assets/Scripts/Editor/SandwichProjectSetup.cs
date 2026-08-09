@@ -114,7 +114,12 @@ namespace SandwichGame.Editor
             GameObject cabbagePiece=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/양배추/양배추_조각.fbx");
             GameObject cabbageShredded=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/양배추/양배추_채.fbx");
             GameObject tomato=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/토마토/TOMATO/260805_tomato.fbx");
-            foreach(string id in ids){GameObject prefab=null;if(id=="CABBAGE_PIECE")prefab=cabbageWhole;else if(id=="L_CUT_CABBAGE_PIECE")prefab=cabbageHalf;else if(id=="M_CUT_CABBAGE_PIECE")prefab=cabbagePiece;else if(id=="S_CUT_CABBAGE_PIECE")prefab=cabbageShredded;else if(id.Contains("TOMATO"))prefab=tomato;else old.TryGetValue(id,out prefab);database.entries.Add(new IngredientPrefabEntry{stateId=id,prefab=prefab});}
+            GameObject wrappedBreadHalf=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Bread_Bag_BASEHalf.prefab");
+            GameObject wrappedBreadPiece=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Bread_Bag_Slice.prefab");
+            GameObject breadWhole=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Bread_BASE.prefab");
+            GameObject breadHalf=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Bread_BASEHalf.prefab");
+            GameObject breadPiece=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Bread_Piece.prefab");
+            foreach(string id in ids){GameObject prefab=null;if(id=="CABBAGE_PIECE")prefab=cabbageWhole;else if(id=="L_CUT_CABBAGE_PIECE")prefab=cabbageHalf;else if(id=="M_CUT_CABBAGE_PIECE")prefab=cabbagePiece;else if(id=="S_CUT_CABBAGE_PIECE")prefab=cabbageShredded;else if(id=="L_CUT_BREAD_BAG_CLOSED_LOAF")prefab=wrappedBreadHalf;else if(id=="M_CUT_BREAD_BAG_CLOSED_LOAF"||id=="S_CUT_BREAD_BAG_CLOSED_LOAF")prefab=wrappedBreadPiece;else if(id=="BREAD_LOAF")prefab=breadWhole;else if(id=="L_CUT_BREAD_LOAF")prefab=breadHalf;else if(id=="M_CUT_BREAD_LOAF"||id=="S_CUT_BREAD_LOAF")prefab=breadPiece;else if(id.Contains("TOMATO"))prefab=tomato;else old.TryGetValue(id,out prefab);database.entries.Add(new IngredientPrefabEntry{stateId=id,prefab=prefab});}
         }
 
         private static void RemoveGeneratedPlaceholders(){if(AssetDatabase.IsValidFolder(GeneratedPrefabFolder))AssetDatabase.DeleteAsset(GeneratedPrefabFolder);if(AssetDatabase.IsValidFolder(GeneratedMaterialFolder))AssetDatabase.DeleteAsset(GeneratedMaterialFolder);}

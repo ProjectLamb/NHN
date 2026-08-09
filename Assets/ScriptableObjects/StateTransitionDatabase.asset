@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: StateTransitionDatabase
   m_EditorClassIdentifier:
   transitions:
-  - {sourceStateId: BREAD_BAG_CLOSED_LOAF, action: Open, amount: , resultStateId: BREAD_BAG_OPENED_LOAF}
-  - {sourceStateId: BREAD_BAG_OPENED_LOAF, action: Cut, amount: L, resultStateId: L_CUT_BREAD_LOAF}
-  - {sourceStateId: BREAD_BAG_OPENED_LOAF, action: Cut, amount: M, resultStateId: M_CUT_BREAD_LOAF}
-  - {sourceStateId: BREAD_BAG_OPENED_LOAF, action: Cut, amount: S, resultStateId: S_CUT_BREAD_LOAF}
+  - {sourceStateId: BREAD_BAG_CLOSED_LOAF, action: Open, amount: , resultStateId: BREAD_LOAF}
+  - {sourceStateId: BREAD_BAG_CLOSED_LOAF, action: Cut, amount: L, resultStateId: L_CUT_BREAD_BAG_CLOSED_LOAF}
+  - {sourceStateId: BREAD_BAG_CLOSED_LOAF, action: Cut, amount: M, resultStateId: M_CUT_BREAD_BAG_CLOSED_LOAF}
+  - {sourceStateId: BREAD_BAG_CLOSED_LOAF, action: Cut, amount: S, resultStateId: S_CUT_BREAD_BAG_CLOSED_LOAF}
+  - {sourceStateId: BREAD_LOAF, action: Cut, amount: L, resultStateId: L_CUT_BREAD_LOAF}
+  - {sourceStateId: BREAD_LOAF, action: Cut, amount: M, resultStateId: M_CUT_BREAD_LOAF}
+  - {sourceStateId: BREAD_LOAF, action: Cut, amount: S, resultStateId: S_CUT_BREAD_LOAF}
   - {sourceStateId: CABBAGE_PIECE, action: Cut, amount: L, resultStateId: L_CUT_CABBAGE_PIECE}
   - {sourceStateId: CABBAGE_PIECE, action: Cut, amount: M, resultStateId: M_CUT_CABBAGE_PIECE}
   - {sourceStateId: CABBAGE_PIECE, action: Cut, amount: S, resultStateId: S_CUT_CABBAGE_PIECE}
@@ -33,6 +36,7 @@ MonoBehaviour:
   - {sourceStateId: L_TAKEOFF_CHEESE_SLICE_WRAPPED, action: Open, amount: , resultStateId: L_OPENED_CHEESE_SLICE}
   - {sourceStateId: M_TAKEOFF_CHEESE_SLICE_WRAPPED, action: Open, amount: , resultStateId: M_OPENED_CHEESE_SLICE}
   - {sourceStateId: S_TAKEOFF_CHEESE_SLICE_WRAPPED, action: Open, amount: , resultStateId: S_OPENED_CHEESE_SLICE}
-  - {sourceStateId: MAYO_BOTTLE_CLOSED, action: TakeOff, amount: L, resultStateId: L_TAKEOFF_MAYO}
-  - {sourceStateId: MAYO_BOTTLE_CLOSED, action: TakeOff, amount: M, resultStateId: M_TAKEOFF_MAYO}
-  - {sourceStateId: MAYO_BOTTLE_CLOSED, action: TakeOff, amount: S, resultStateId: S_TAKEOFF_MAYO}
+  - {sourceStateId: MAYO_BOTTLE_CLOSED, action: Open, amount: , resultStateId: MAYO_BOTTLE_OPENED}
+  - {sourceStateId: MAYO_BOTTLE_OPENED, action: TakeOff, amount: L, resultStateId: L_TAKEOFF_MAYO}
+  - {sourceStateId: MAYO_BOTTLE_OPENED, action: TakeOff, amount: M, resultStateId: M_TAKEOFF_MAYO}
+  - {sourceStateId: MAYO_BOTTLE_OPENED, action: TakeOff, amount: S, resultStateId: S_TAKEOFF_MAYO}
